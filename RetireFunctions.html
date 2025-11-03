@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/RetireFunctions.md">
+    
+    <title>RetireFunctions - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/RetireFunctions.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>Retiring Unused Functions</h1>
+<p>As functions age, they may no longer be used.  The one caveat is than
+an 'unused function' may be a command-line function.  Given an
+othewise unused function, here's a process, a work-flow to retire a
+function.</p>
+<p>Here is the <a href="./Development.html">Table of Contents</a></p>
+<h2>Update the function Libraries</h2>
+<p>See the disucssion in <a href="./TheDevLoop.html">The Dev Loop</a></p>
+<p><code>wrap_up</code></p>
+<p>When one or more libraries appear zt the end of the process</p>
+<h2>After updating Function Libraries</h2>
+<p>A typical example</p>
+<pre><code>set -- cqdatalib rdlib
+
+fun_dupsfm0 $1 retiring
+
+fun_dupsfm1 $1 retiring
+	
+</code></pre>
+<p>any of the steps may be preceeded by <code>on</code> or <code>off</code>, enabling
+or disabling debugging.</p>
+<h2>Soucre the updated libraries</h2>
+<p>When doing a <code>wrap_up</code> from the <strong>devdir</strong>, it may list one or more
+library names at the end.  These are those who've been moved to <strong>retiring</strong></p>
+<p>source ../cqdatalib
+source ../rdlib</p>
+<p>fbdy $* | tee -a ../retiring
+cd ..</p>
+<p>off; fun_dupsfm1 rdlib retiring</p>
+<p>mv nextlib rdlib</p>
+<p>mv nextlib cqdatalib
+wrap_up</p>
+<h2>Command-line functions to procees</h2>
+<p>nhn ()
+{
+sed 's/^ <em>[1-9][0-9]</em> *//'
+}
+recent_functions ()
+{
+th | awk "$1 &gt; $1" | nhn| grep -v '^thx '
+}</p>
+<pre><code> $ th [ NN ] | nhn 
+	 
+</code></pre>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

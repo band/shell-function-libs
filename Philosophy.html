@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/Philosophy.md">
+    
+    <title>Philosophy - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/Philosophy.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>Function Philosophy</h1>
+<p>Here is the <a href="./Development.html">Table of Contents</a>.</p>
+<p>Is there a "function philosophy"?  Raising the question makes it so,
+provided the questions lead to a useful outlook on the subject of
+functions.</p>
+<p>Let's raise a few philosophic questions about shell functions.</p>
+<p>First of all, a function is meant to do one thing well with few side
+effects.  Which suggests size may be a constraint.  I like to think
+that if function has control flow statements, it should have but one.</p>
+<p>On the subject of size, it's possible to have an awk script inside a
+function; at some point it makes sense to put the awk script in a
+separate file.  I've not developed a hard and fast practice about how
+large an awk script is before it needs it's own file.</p>
+<p>A big issue for the bash function is how well documented must it be.
+I'd like to think functions are self-documenting, easily read by the
+code.  We'll go thru a sequence of documentation features for a
+function.  These features would seem to place a performance penalty on
+the function.  Before we're through, let's run a few timing tests on
+that prospect.  The philosophic question in this chapter is <em>How, and
+what features serve the objective of sufficiently documented
+function</em>?</p>
+<h2>An Example</h2>
+<p>Since we claim a philosophical point here, and we're talking code, a
+famous challenge in any language is a <a href="https://en.wikipedia.org/wiki/Quine_(computing)">quine
+program</a>.  We'll base
+our example on a function which may be called a <code>quine</code> since, in it's
+fullest form doesn't require external input, though it does depend on
+the shell <code>Environment</code>.</p>
+<p>That function is <code>aFunctionBody</code> so named because it shows its own source:</p>
+<pre><code class="language-sh">!include ./src/shell/aFunctionBody
+</code></pre>
+<p>and here is its execution, which produced the file displaying the result:</p>
+<pre><code>$ aFunctionBody  | tee shell/aFunctionBody 
+aFunctionBody () 
+{ 
+    : writes itself on the output;
+    declare -f aFunctionBody
+}
+
+</code></pre>
+<p>This chapter introduces a more practical name for such a function, which
+we'll call <code>fbdy</code>, pronounced by saying it's letters.   This is a good point
+to introduce a practice of naming functions.  The higher principles are</p>
+<p>The functions name should:</p>
+<ol>
+<li>say <strong>what</strong> the function does, possibly naming what it may <strong>produce</strong></li>
+<li>and not necissarily say <strong>how</strong> it does it,</li>
+<li>is sufficiently <strong>concise</strong></li>
+<li>reflect higher-level naming requirements.</li>
+</ol>
+<p>A big issue for the bash function is how well documented must it be.
+I'd like to think functions are self-documenting, easily read by the
+code.  We'll go thru a sequence of documentation features for a
+function.  These features would seem to place a performance penalty on
+the function.  Before we're through, let's run a few timing tests on
+that prospect.  The philosophic question in this chapter is <em>How, and
+what features serve the objective of sufficiently documented
+function</em>?</p>
+<h2>Practical Application</h2>
+<p>This leads us to a much-used function to display the function bodies
+of it's arguments.  It's called <strong>F</strong>unction<strong>B</strong>o<strong>DY</strong>.  We will go
+thru a sequence of steps, adding a feature at a time, a line at a
+time.</p>
+<h3>simple</h3>
+<p>The elementary function is shown here.  Each of the subsequent
+steps add a concept, where the link to the concept is being developed
+below.</p>
+<pre><code class="language-sh">!include ./src/shell/fbdy_simple
+</code></pre>
+<p>Here the <code>$@</code> syntax is a shorthand for <code>$1 $2 $3 ...</code>, which means
+<em>all the arguments to the function</em>.</p>
+<h3>abstract</h3>
+<p>Now introduce an abstract,</p>
+<pre><code class="language-sh">!include ./src/shell/fbdy_abstract
+</code></pre>
+<p>Where we'll see that an <code>abstract</code> is the first line of a function's
+<code>shdoc</code>, or <strong>sh</strong>ell <strong>doc</strong>umentation.  More on that subject in it's
+own chapter.</p>
+<h3>default</h3>
+<p>Next add the syntax to permit a default argument.</p>
+<pre><code class="language-sh">!include ./src/shell/fbdy_default
+</code></pre>
+<p>which in this case is the function itself. If no arguments are
+suopplied, then display <code>fbdy</code> itself, otherwise, display the bodies
+of function arguments.</p>
+<h3>tag</h3>
+<p>To introduce the concept of a function <code>tag</code>, in this case the <em>date</em>
+the function was recently updated.</p>
+<pre><code class="language-sh">!include ./src/shell/fbdy_tag
+</code></pre>
+<h2>The SHell DOCumentation</h2>
+<p>Shell functions each have their <code>shdoc</code> and there is a function to
+extract it.  The idea arose from <em>javacoc, perdoc,</em> ... It uses the
+first <code>null-command</code> lines of the function, which must be the first
+lines of the function.  The first line of the funcion is the
+function's <code>abstract</code>. Any <code>tag</code>s the function uses follow the <code>shdoc</code>
+and any <code>date</code> tags follow the remaining <code>tags</code> and preceed the
+function code.</p>
+<p>Null-commands may be placed throughout the function code, but are not
+considered part of the function's <code>shdoc</code>.</p>
+<p>Use of the null-command carries with it some cautionary warnings,
+fully covered in <a href="./TheNullCommand.html">The Null Command</a></p>
+<h2>Reference</h2>
+<ul>
+<li>date stamp</li>
+<li>function body</li>
+<li>myname</li>
+<li>parameter substitution</li>
+<li>usage</li>
+</ul>
+<h2>Definition</h2>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

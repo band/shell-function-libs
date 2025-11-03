@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/Henny.md">
+    
+    <title>Henny - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/Henny.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>The Value of an Alias</h1>
+<p>I've long questioned the value of an <em>alias</em> in shell
+programming. I've grown a collection of about 40 but they all see to
+be "one-off"s, which serve as a short-hand to make the shell command
+typing easier.  Just recently I've encountered a situtation where a
+small and related collection serve a work-flow.</p>
+<p>Here is this folder's <a href="./Changelog.html">Changelog</a>.</p>
+<h2>The Need</h2>
+<p>I was working in a <strong>src</strong> directory just now, with a bunch of
+<code>file_function</code>s where I've found the value of using <em>alias</em>es.</p>
+<p>It  serves when  you  know, for  example, your  first  shell arg  "$1"
+doesn't need reapeating.  Since you've a few args in hand, the idea is
+to take individual step with a  single argument, where the result will
+tell you the next  step to take.  It shouldn't be  a long process with
+too many decisions.  A handful will  be plenty.</p>
+<h2>The Pieces</h2>
+<p>library/family namew wiht a sub function _al hold definitions
+supporting the functions in the library.  e.b.  'backup_al` assigns
+aliases using functions in the backup library.</p>
+<p>a sufficient number of these Fam_al functions span the majority of the
+alias in use.  in order to keep all alias assignment in definingl
+functions, at some point it serves to collect those yet seeking
+assignment in, say the <code>cmdlinelib</code>.</p>
+<p>here, we develope a process to round up the dominant useage, to leave
+the remaining few in the designated collection, e.g. cmdlinelib.</p>
+<h2>alias collection</h2>
+<h2>A Procedure</h2>
+<p>Here's the process I'm going thru to restore a group of file functions
+to their appropriate library, which is either the library where the
+function is defined, or a library with the most affiliated functions,
+either called by or called from:</p>
+<h3>Starting</h3>
+<pre><code class="language-txt">
+     INCLUDE ../txt/xal
+</code></pre>
+<h3>First steps</h3>
+<p>Having loaded the library, all the functions and aliases are available.
+The routine seqeunce, now having source the library:</p>
+<h4>xgo - using <code>xhy</code> to return the functions</h4>
+<pre><code class="language-txt">
+     INCLUDE ../txt/xgo
+</code></pre>
+<h3>next</h3>
+<p>Take your time waiting for a more realistic example, using the</p>
+<ol>
+<li>for the <em>homed</em>:
+<ol>
+<li>if the function is identical to its homed self, back it up and
+remove any local copy</li>
+<li>if the current local copy is different and ready for update,
+then update it to the home libray</li>
+<li>or it's not, skip it for now.</li>
+<li>select the next <em>homed</em> function, until complete</li>
+</ol>
+</li>
+<li>the <em>solo</em> at the moment has not been stored in a <em>home</em>
+library. Setting an Environment variable to the destintion new home,
+defaulting to <strong>../retiring</strong>
+<ol>
+<li>step thru the list of solos</li>
+<li>if the  solo function is ready, append it  to its intended home,
+backing up, and removing the file function</li>
+<li>or as above, if not ready skip</li>
+</ol>
+</li>
+</ol>
+<p>When the functions have been looped through this way you are left with
+those functions needing  further editing, testing, before  they may be
+returned home.</p>
+<p>The paper  on <a href="./TheDevLoop.html">The Development Loop</a>  addresses the
+challenges when functions have newly been entered or returned home.</p>
+<pre><code>       
+</code></pre>
+<h3>functions</h3>
+<pre><code>    
+</code></pre>
+<p>The list of functions is returned by the <code>xfu</code> function</p>
+<pre><code>
+     INCLUDE ../src/split_homed
+</code></pre>
+<h3>aliases</h3>
+<pre><code>    
+</code></pre>
+<p>The list of aliases is returned by the <code>xal</code> function</p>
+<h2>Concepts</h2>
+<pre><code>    
+</code></pre>
+<ul>
+<li>alias</li>
+<li>home,d</li>
+<li>home library</li>
+<li>solo,s</li>
+<li>file function</li>
+</ul>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

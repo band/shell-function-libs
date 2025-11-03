@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/SimpleVersion.md">
+    
+    <title>SimpleVersion - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/SimpleVersion.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>A Simple Version Scheme</h1>
+<h2>1 Introduction {#sec-1}</h2>
+<p>Here's the <a href="./Development.html">Table of Contents</a></p>
+<p>[]{#text-1} For the time being, this is an unsupported assertion:</p>
+<p><em>The versioning system described here, while single-user in design, can
+be readily made into a team model.</em></p>
+<p>Let's see if it is that simple for the single user. I'm a relatively
+new (since 2011) convert to github. Here is <a href="https://github.com/applemcg">my GitHub
+account</a>, which is my deep reserve. Having
+said that, I've remodeled the versioning system at the back end to be
+almost trivial.</p>
+<p>The versioning system has always been in two parts: a directory-based
+file backup, and a companion version system. The file backup is simple
+if not obvious, and the versioning component is now nearly trivial. I
+use them both in preparation to using <strong>git</strong> (on github), where real
+collaboration takes place.</p>
+<p>We'll discuss the requirements of the backup and the versioning
+separately, noting some evolution in each.</p>
+<p>This implementation is based on the [backup system discussed
+here.](./</p>
+<p>[]{#outline-container-sec-2}</p>
+<h2>2 The backup {#sec-2}</h2>
+<p>[]{#text-2} For some years now (since 2006), I've practiced a backup
+system with a few simple principles:</p>
+<ol>
+<li>backup files should have the same name as the file being backed up.
+(and not have a version component in their file name).</li>
+<li>file modification times don't change because of a backup</li>
+<li>binary and text files are backed up similarly. (the commands don't
+take notice of the file type)</li>
+<li>unchanged files are not be backed up.</li>
+<li>the latest backup is the candidate for a complete version.</li>
+<li>the backup files should be easily inspected, and if necessary may be
+deleted.</li>
+</ol>
+<p>The model, once you see it, is so simple, I hope you say "Now, why
+didn't I think of that?" It works this way because there is always an
+available name to back up a changed file. I credit <a href="http://en.wikipedia.org/wiki/David_Korn_(computer_scientist)">Dave
+Korn's</a>
+inspiration for the idea.</p>
+<p>In Bell Labs' <em>Plan 9</em> release of Unix, he included a directory
+component whose name was "...", yes, "dot, dot, dot". In all known
+versions of Unix, the current directory may be referenced as <em>dot</em>, the
+parent directory as <em>dot dot</em>, So why not a child directory, and in this
+case, explicitly named "...", <em>dot, dot, dot</em>. So, what's in the
+child directory? How about successive versions of a file. The nfile
+system calls: <em>open, read, write, ...</em> have options to address the
+versioning system. I forget exactly how it goes, but the defaults all
+behave consistently, and <em>write</em> creates the latest version.</p>
+<p>With that in mind, and not having such a luxury in the places where the
+<em>bash</em> shell is usually found, I thought of a way to use the idea
+without special operating system intervention. How about creating the
+backup file in an actual directory, whose name is <code>.bak</code>{.verbatim}. So,
+the command:</p>
+<pre><code class="language-example">$ backup file.txt
+</code></pre>
+<p>produces a separate (i.e. not <em>linked</em>) file in the backup directory,
+with the same name and modification time. More on the link idea later.</p>
+<pre><code class="language-example">$ ls -l .bak/file.txt file.txt
+</code></pre>
+<p>shows two files with identical size and modification times.</p>
+<p>What if you've already backed up a file? Won't you overwrite it? The
+answer is "no". Why? Well, in the example we just saw, since that was
+our first backup, there was no .bak/file.txt, so, of course we create
+the identical copy. What allowed us to do that? There was no file in the
+.bak directory, so we may copy (or move) our current file to the backup
+without a copy of the file.</p>
+<p>So, to answer the question: before we blithely copy a file into a
+directory, see if there is already one there, and if so, continue down
+the backup chain to find a file with no backup, That one gets moved down
+to it's backup and so on until we've created the space for our newly
+changed file.</p>
+<p>My first implementation was in Tcl, as a means of demonstrating Tcl's
+ability to use the same commands and program on Windows and *nix
+systems. But then, since my daily routine allowed <em>Cygwin</em> with the bash
+shell, I moved the backup into that environment.</p>
+<p>All was fine, as I blithely backed up files, paying no attention to the
+depth of .bak/.bak's, e.g, I was at a depth of 30-plus backups for some
+files. Truth be told, a dozen is plenty of backups.</p>
+<p>One other motivating interest in developing "The Only Backup You'll
+Ever Need" was a letter in one of the on-line forums. A fellow was
+taking a disk from Windows machine to machine (speaks to an era) and had
+coded for ten backup files: file.bat was copied to file.001 which had
+been copied to file.002, and so-on down to file.010. And the question
+immediately arises. "What if that was the good one, the one you wanted
+to keep?"</p>
+<p>Not a problem with TOBYEN.</p>
+<p>The backup has evolved in one significant way. As it stands. a
+directory's backup chain hangs from itself. In other words, the
+command:</p>
+<pre><code class="language-example">$ find .bak -type f  ...
+</code></pre>
+<p>list the backup files in this directory. To collect only the backup
+files from any related directories requires naming them all.</p>
+<p>[]{#outline-container-sec-3}</p>
+<h2>3 The Code {#sec-3}</h2>
+<ul>
+<li>backup</li>
+</ul>
+<h2>4 The version {#sec-4}</h2>
+<p>[]{#text-4}</p>
+<ol>
+<li>A version is a time-stamped collection of the current backup files.</li>
+<li>A version may collect multiple backup sites within single hierarchy.</li>
+</ol>
+<p>Once an effective backup program is working, it only remains to put a
+version "stamp" on a collection of files. My first efforts to capture
+a version, simply created a directory with a time-stamp name, to the
+current backup copy and linked all the currently backed up files into
+the time-stamped directory.</p>
+<p>For example all files in <code>.bak</code>{.verbatim} are linked into a directory
+named, say <code>.ver/21040214_232425</code>{.verbatim} which is created on the fly
+by a function. When creating the version, you need to ensure only those
+files, and all such files, that are created by human hands are the
+backed up files, and hence the files.</p>
+<p>An experimental version for <strong>backup~version~</strong> is available. It
+satisfies the 2nd requirement. Here is a sample command:</p>
+<pre><code class="language-example">ln -f  a/b/.bak/file  .ver/{YYYY_MMDD_hhmmss}/a/b/file
+</code></pre>
+<p>where the current file is <strong>a/b/file</strong>, and the candidate directories
+for a multi-site version are identified:</p>
+<pre><code class="language-example">find . -type d -name .bak | grep -v '\/\.bak\/\/.bak' 
+</code></pre>
+<p>since the only files to collect for a version are those in the top
+backup directory (the newest).</p>
+<p>[]{#outline-container-sec-5}</p>
+<h2>5 references {#sec-5}</h2>
+<p>[]{#text-5}</p>
+<ol>
+<li>Korn Shell author:
+<a href="http://en.wikipedia.org/wiki/David_Korn_(computer_scientist)">davekorn</a></li>
+</ol>
+<p><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1</p>
+<p><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+<h1>Concept</h1>
+<h2>Reference</h2>
+<h2>Definition</h2>
+<ul>
+<li></li>
+</ul>
+<!--
+
+## deprecated
+
+1. 
+
+  -->
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

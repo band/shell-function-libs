@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/TheProfileStory.md">
+    
+    <title>TheProfileStory - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/TheProfileStory.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>The  Profile Story</h1>
+<p>This note documents a means how to <a href="https://www.baeldung.com/linux/bashrc-vs-bash-profile-vs-profile">organize your
+profile</a>,
+the commands to setup your working environment.</p>
+<p>Quoting,  <em>If Bash  doesn’t find  .bash_<em>profile</em>, then  it looks  for
+.bash_login  and  .profile, in  that  order,  and executes  the  first
+readable file only.</em></p>
+<p>So I prefer <code>.bash_profile</code></p>
+<p>Here is the <a href="./Development.html">Table of Contents</a></p>
+<h2>bash_profile</h2>
+<p>My  idea  is  the bash  profile  does  no  real  work; save  that  for
+<code>.user_profile</code>.  Anyone can use this .bash_profile with out having to
+do anything special.</p>
+<!--
+   testing an HTML comment
+  -->
+<pre><code>	
+</code></pre>
+<pre><code>!include ./src/shell/.bash_profile
+</code></pre>
+<p>A few points  stand out. The only executable statement  in the file is
+the</p>
+<pre><code>    eval bash_init  1&gt;&amp;2
+	 
+</code></pre>
+<p>which <em>evaluates</em> or executes the <code>bash_init</code> function.  One might ask
+"why bother  about capturing these  few commands in a  function?"  The
+easy answer is "why not", since this practice is all about functions</p>
+<h3>Two optional features</h3>
+<p>In the  spirit of "do nothing  politely", this bash_profile has  a few
+features which give the user to customize their own Environment:</p>
+<ul>
+<li>the <code>.user_profile</code>   is <em>sourced</em> if it exists</li>
+<li>the <code>.alias.rc</code>   is <em>sourced</em> if it exists</li>
+<li>a  <strong>user_init</strong> function  is called  (executed/evaluated) if  it is
+defined, presumably in the user_profile</li>
+</ul>
+<h3>Save the System Supplied PATH</h3>
+<p>I think it's  a useful feature to save the  System Supplied <code>PATH</code>. To
+manage  your PATH  you  will want  to append  and  prepend other  PATH
+components.  I'm in the process of converting from a means I retard as
+archaic  to  a  much  more   maintainable  version  by  returning  new
+components from functions.</p>
+<h3>Set any User Options</h3>
+<p>An existing <code>.alias.rc</code> file is //sourced//.   I debated with myself
+on performing this in the .user_profile or the .bash_profile.</p>
+<p>Also, an existing .user_profile.  The file is read into the shell's
+memory (Environment).</p>
+<h3>If the User has an "Init" function</h3>
+<p>As it  stands, a user_init function  is evaluated if it  exists. As an
+alternative, which I used in debugging the whole user_profile:</p>
+<pre><code>    echo user_init 1&gt;&amp;2
+</code></pre>
+<p>as  a hint  to proceed,  allowing  any wrapping  debugging around  its
+execution.</p>
+<h2>user_profile</h2>
+<p>This is  considerably more  involved.  The  operative function  is the
+<code>user_init</code> which in turn invokes these functions:</p>
+<ul>
+<li><code>user_prefs</code> - sets Environment Variables, user directories</li>
+<li><code>user_path</code> - prepends or appends PATH fragments</li>
+<li><code>user_losd</code> - sources function libraries</li>
+<li><code>path_reset</code> - removes possible redundant entries on the PATH</li>
+</ul>
+<h2>Profile rules</h2>
+<p>These apply to the login profiles:  bash, user, as well as any library
+source in the process:</p>
+<ul>
+<li><em>Nothing is written on the <code>stdout</code></em></li>
+<li><em>Useful messages may be written on the `stderr</em></li>
+</ul>
+<h1>Concept</h1>
+<h2>Reference</h2>
+<h2>Definition</h2>
+<ul>
+<li></li>
+</ul>
+<!--
+
+## deprecated
+
+1. 
+
+  -->
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

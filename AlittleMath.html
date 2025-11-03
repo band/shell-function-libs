@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/AlittleMath.md">
+    
+    <title>AlittleMath - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/AlittleMath.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>A Little Math Library</h1>
+<p>The Unix Utilities has an <em>arbitrary-precision decimal .. calculator</em></p>
+<p>This function library wraps that command with arithmatic function for
+quick comman-line access.</p>
+<p>Here's the <a href="./Development.html">Table of Contents</a></p>
+<h2>Usage</h2>
+<pre><code>    source mathlib
+	
+</code></pre>
+<p>reads the current functions into the shell's Environment.</p>
+<pre><code>    math_list pct ebcl bcl div pi radian times sum minus math_init twoplaces
+	
+</code></pre>
+<p>which was produced by the function:</p>
+<pre><code class="language-sh">!include ./src/shell/math_list
+</code></pre>
+<h3>Example</h3>
+<ul>
+<li>
+<p>a very good rational approximation of PI:</p>
+<pre><code>  $ PI="$(div 355 113)"; nava PI
+  PI	3.14159292035398230088
+</code></pre>
+</li>
+<li>
+<p>or a decimal percent:</p>
+<pre><code>  $ Answer=$( pct $( div 473 908))
+  $ printf "Answer\t$Answer\n"
+  Answer	52.09
+</code></pre>
+</li>
+<li>
+<p>the helper function</p>
+</li>
+</ul>
+<pre><code class="language-sh">!include ./src/shell/math_init
+</code></pre>
+<p>produces:</p>
+<pre><code>    $ math_init
+    math_list pct ebcl bcl div pi radian times sum minus math_init twoplaces
+    pi, radian are constants
+    div minus take two args. times, sum take N
+</code></pre>
+<h2>Terms</h2>
+<ul>
+<li><code>Environment</code> -- the memory of the current Shell process.  Includes variables and functions.</li>
+</ul>
+<h1>Concept</h1>
+<h2>Reference</h2>
+<h2>Definition</h2>
+<ul>
+<li>Environment</li>
+</ul>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

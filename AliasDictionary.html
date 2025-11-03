@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/AliasDictionary.md">
+    
+    <title>AliasDictionary - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/AliasDictionary.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>Alias Dictionary</h1>
+<p>Here's the <a href="./Development.html">Table of Contents</a></p>
+<p>My aliases are found in ~/.alias.rc, and sourced from
+the ~/.user profile.</p>
+<p>Besides the <code>alias</code> command itself to show tham at any time, I've
+installed a few helpers.</p>
+<ul>
+<li>ag  - an Alias eGrep</li>
+<li>ahelp -  the Alias HELPer</li>
+<li>sava - SAVe the current Aliasesd  ( in ~/.alias.rc )</li>
+<li>ua - User Aliases, the list of the aliases</li>
+</ul>
+<h2>ag</h2>
+<p>For example:</p>
+<pre><code>$ ag `s p`
+</code></pre>
+<p>Grep for <code>s p</code>.  Letter 's', then a space followed by the letter 'p',
+looking for aliases beginning with the letter 'p'</p>
+<pre><code>alias page='tail -$(expr ${LINES:-27} - 3)'
+alias pbx='backup $1; rm -f $1; backup_sync; shift'
+alias pd='pickd'
+alias prep='clean rm -f; backup_prepare'
+alias python='python3'
+</code></pre>
+<h2>ahelp</h2>
+<pre><code>alias a2='ua | grep "^..$"'
+alias a3='ua | grep "^...$"'
+alias ag='alias | egrep'
+alias ahelp='clear; ag "( (a|x)|backup|grep|xargs)" | sort -u '
+alias aotd='comment Alias Of The Day; ag pbx'
+alias ba='foreach ta $(ua) | grep -v alias'
+alias bbf='backup $(backup_files)'
+alias btop='backup_top | xargs ls -alrt'
+alias df1='grep -v '\''^&gt;'\'''
+alias df2='grep -v '\''^&lt;'\'''
+alias fx='foreach xx '
+alias lbf='llrt $(backup_files)'
+alias pbx='backup $1; rm -f $1; backup_sync; shift'
+alias prep='clean rm -f; backup_prepare'
+alias qaddr='addresses cat | rd grep -i'
+alias qbk='find . -type f | grep [.]bak | grep -v .bak/.bak | top24'
+alias sava='a=~/.alias.rc; (alias;echo alias)&gt;$a; backup $a; ahelp'
+alias top24='xargs ls -ltd | awk -F/ "!p[\$NF]++" | quiet sed 24q'
+alias vgrep='grep -v'
+alias xd='dp_diff $1 $(whsrc $1)'
+alias xeq='echo $#: $@'
+alias xlrt='xargs ls -alrtd'
+alias xrt='cat $1 | tee -a ${UNIQ_LIB:-../retiring}; xbr;'
+alias xup='quthl $1;  xbr'
+</code></pre>
+<h2>sava</h2>
+<pre><code>
+$ ag sava
+alias sava='a=~/.alias.rc; (alias;echo alias)&gt;$a; backup $a; ahelp'
+~.$
+
+</code></pre>
+<p>Note the use of:</p>
+<ul>
+<li>a shell variable: <strong>a</strong></li>
+<li>a sub-shell: <strong>( ... )</strong></li>
+<li>a local <strong>backup</strong> utility saves, or backs up the alias file</li>
+<li>and <strong>ahelp</strong></li>
+</ul>
+<h2>ua</h2>
+<pre><code>$ ag ua=
+alias ua='alias | sed '\''s/=.*//; s/^alias //'\'''
+$
+</code></pre>
+<p>Note the use of the <strong>=</strong> sign to isolate the alias name</p>
+<pre><code>   $ ua | sed 's/^/### /'
+</code></pre>
+<h2>commands</h2>
+<ul>
+<li><code>ahelp    | md_quote | tee src/ahelp.txt</code></li>
+<li><code>ag 's p' | md_quote  | tee src/s_p.txt</code></li>
+<li><code>open $(pemd AliasDictionary.md)</code></li>
+</ul>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

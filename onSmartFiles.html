@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/onSmartFiles.md">
+    
+    <title>onSmartFiles - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/onSmartFiles.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>Smart Names and Lists</h1>
+<p>Here's the <a href="./Development.html">Table of Contents</a></p>
+<p>The smart name practice originated as "smart files".  A smart function
+returns names of other objects: files or functions are the common
+usage. The practice is called "smart" because a function's default
+behavior returns names.  The smart function performs other actions on
+the names by any optional arguments.</p>
+<p>In addition to naming a single file or directory, the practice readily
+expands to lists of files, functions and directories.</p>
+<h1>Implementation</h1>
+<p>The first requirement of a smart function is it's first argument must
+also be a function or a command. It must fulfill this bit of shell
+syntax:</p>
+<pre><code class="language-example">smart_fun () { ${@:-echo} namea nameb ... ; } 
+declare -f $(smart_fun)    # shows the function bodies, or
+smart_fun declare -f       # also works, so the default 
+smart_fun                  # simply lists their names.
+</code></pre>
+<p>When the function has but one argument, for example a function
+directory or file, then, it's smart function.  WHen it has multiple
+arugments, then it becomes a list.</p>
+<h2>list maintenance</h2>
+<p>regular. They accept the name of the smart list followed by the
+arguments, either to create, add names, or delete names. In order to
+expose the deletion mechanism, the <strong>smart~trim~</strong> function is also
+include. Note, <strong>smart~add~</strong> could also be used to create the initial
+list. For safety's sake, a defensive programmer would <code>unset</code> the
+smart name. Also included is the <strong>smart~value~</strong> function, which is a
+list with a single item.</p>
+<p>The functions <strong>smart~list~, smart~add~</strong>, and <strong>smart~del~</strong>
+respectively create the list, add list members, and trim, or delete
+mamebers from the list. This latter function uses <strong>smart~trim~</strong>, which
+uses the smart list (twice), and the arguments to trim. The algorithm
+is: retain arguments appearing twice, since since an argument to trim
+will appear three times and an argument appearing once was an attempt to
+trim an item which is not in the list.</p>
+<h3>functions</h3>
+<ul>
+<li>smart_locality</li>
+<li>smart_init</li>
+<li>smart_function ()</li>
+<li>smart_source ()</li>
+</ul>
+<h2>public functions</h2>
+<p>The first <code>flcomm</code> identifies the functions in common in mklib, fixlib;
+the version in the fixlib is appended to the mklib. The <code>lib_crunch</code>
+eliminates the older version of the duplicate functions.</p>
+<p>The second <code>flcomm</code> identifes the functions uniq to the fixlib; their
+function bodies are saved in a temporary file, which after backups is
+moved to remplace the existing fixlib, again backed up.</p>
+<p>The process may be repeated for <code>publiclib</code> and the <code>mklib</code></p>
+<h2>local functions</h2>
+<p>It seems a necessary feature, after functions are moved to the publiclib
+is to record where they came from. The idea is to define a function:
+<code>{family}_source</code> which displays the source directory where the
+development has taken place. In order to define the function, use PWD:</p>
+<p>In this example, <code>fuse</code> shows where the function was used. So,
+<strong>smart~locality~</strong> is called, through <strong>smart~function~</strong> during
+intialization. If <strong>smart~source~</strong> is part of <strong>smart~publiclist~</strong>, it
+is added to the public library. By keeping <strong>smart~locality~</strong> off the
+public list, then it is not installed, and the value of the fixed
+library is retained in the definition installed in the public library.</p>
+<p>//This needs a better explanation.//</p>
+<h1>History</h1>
+<p>The smart list is a generalization of what I'd previously called a
+smart file. A smartfile is, in effect, a smart~list~ with a single
+element. It might be called a smart~value~.</p>
+<p>This practice is now obsolescent. Collecting the smartfiles in a central
+repository was more trouble than it was worth. These paragraphs will
+soon become COMMENTs in this document.</p>
+<h2>On using smartfiles</h2>
+<p>If someone hasn't done this yet, I've recently invented the term
+<em>smartfile</em>. What is a smartfile? It's a file (or directory) which
+knows where it is. At bottom, it's a function, whose default action is
+to <strong><strong>echo</strong></strong> the name of the related file. It accepts alternate
+commands as arguments. It's been a challenge to generalize, so as it
+stands, the command is limited to the first argument. A favorite for
+directories is the <strong><strong>pushd</strong></strong> command.</p>
+<p>Since <em>HOME</em> is a well-understood Environment variable meaning the
+user's home directory, I'm using the smartfile name <em>home</em> to refer to
+my Dropbox. In effect, this name this is shared "in the cloud", so my
+<strong><strong>home</strong></strong> directory is anywhere I can login to machine with
+<a href="http://dropbox.com">Dropbox</a> access. I'll document my
+<strong><strong>smartflib</strong></strong> elsewhere, but here's how I set this up:</p>
+<pre><code class="language-example">  smartf   home    ~/Dropbox
+</code></pre>
+<p>so, here are some usage examples:</p>
+<pre><code class="language-example">  $ home pushd          # = pushd ~/Dropbox
+  $ home ls             # = ls ~/Dropbox
+  $ ls -l $(home)       # since smartfiles only take ONE argument, since
+  $ home                # returns $HOME/Dropbox
+</code></pre>
+<p>all simple to appreciate.</p>
+<h2>The Smartfiles smartfile</h2>
+<p>The most recent enhancement to this idea is the smartfile named
+<strong><strong>smartfiles</strong></strong>. What does it look like:</p>
+<pre><code class="language-example">  smartf  smartfiles  $(home)/etc/smartfiles
+</code></pre>
+<p>and what does it do, or better yet, how is it used?</p>
+<pre><code class="language-example">  smartfiles source
+</code></pre>
+<p>which does what? Think about it a second. It /source/s the smartfiles!
+What? Yes, sources the smartfiles. And what does that do? It sets most
+all of the smartfiles. So, in the <em>chicken-or-egg</em> world, how does that
+happen? In your profile, or in the interest of the
+<em>keep-your-profile-clean</em> principal, in a personal <em>rc</em> file, which I
+call **.myrc**. When I login, my profile sets a handful of
+functions, which are sufficiently inobtrusive</p>
+<p>to the general user, my first command at the terminal is most often:</p>
+<pre><code class="language-example">  . .myrc
+</code></pre>
+<p>since I'm developing a practice of sourcing different **./any/rc**
+file,where the "any" could be the basis of some work, like writing
+the <em>Commonplace</em> book.</p>
+<p>Here is my current <strong><strong>smartfiles</strong></strong> smart file:</p>
+<pre><code class="language-example"> _sfd () { ignore smartd $*; mkdir -p $2; }
+ _sff () { ignore smartf $*; }
+ 
+   _sfd home       $HOME/Dropbox
+   _sfd labase     /usr/local/texlive/2011/texmf-dist/tex/latex/base
+   _sfd shf        $(home)/shf
+   _sfd db         $(home)/git/bash-functions/bin
+   _sfd dots       $(home)/dot
+   _sfd etc        $(home)/etc
+   _sfd etclib     $(home)/etc/lib
+   _sfd ETCLIB     $(home)/etc/lib;
+ 
+   _sff smartfiles $(etc)/smartfiles
+   _sff T          $(etclib)/.$(today)
+ 
+</code></pre>
+<p>A recent enhancement, after a few years of practice is to replace the
+too-bold <em>ETCLIB</em> with my developing practice of lower-case named
+<strong><strong>etclib</strong></strong>. I'm leaving ETCLIB in place, taking time to make sure
+I've replaced all its references.</p>
+<p>Note how a smartfile name is used in subsequent names -- a lot like a
+shell variable names. For this practice, used at start-up, it's not too
+expensive to use a function over a variable name.</p>
+<p>Also, note the two local functions, <strong><strong>\/sfd</strong></strong> and <strong><strong>\/sff</strong></strong>,
+for directories and files respectively. The only difference at this
+level is to make sure the directory exists.</p>
+<h1>references</h1>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

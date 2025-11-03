@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/ShellFunctions.md">
+    
+    <title>ShellFunctions - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/ShellFunctions.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <ul>
+<li><a href="#shell-functions-how-to-write-save-re-use">Shell Functions, How To Write, Save,
+Re-use</a>{#toc-shell-functions-how-to-write-save-re-use}
+<ul>
+<li><a href="#write-a-shell-function">Write a Shell
+Function</a>{#toc-write-a-shell-function}
+<ul>
+<li><a href="#hello-world">Hello World</a>{#toc-hello-world}</li>
+<li><a href="#more-interesting">More interesting</a>{#toc-more-interesting}</li>
+</ul>
+</li>
+<li><a href="#use-function-arugments">Use Function
+Arugments</a>{#toc-use-function-arugments}
+<ul>
+<li><a href="#the-first-argument">The first
+argument</a>{#toc-the-first-argument}</li>
+</ul>
+</li>
+<li><a href="#introduing-shell-syntax-the-for-loop">Introduing Shell Syntax, the For
+Loop</a>{#toc-introduing-shell-syntax-the-for-loop}
+<ul>
+<li><a href="#individual-arguments">Individual
+Arguments</a>{#toc-individual-arguments}</li>
+<li><a href="#multiple-arguments">Multiple
+Arguments</a>{#toc-multiple-arguments}</li>
+<li><a href="#the-for-loop">The For loop</a>{#toc-the-for-loop}</li>
+<li><a href="#the-for-syntax">The <em>for</em> syntax</a>{#toc-the-for-syntax}</li>
+<li><a href="#the-foreach-function">The foreach
+function</a>{#toc-the-foreach-function}</li>
+<li><a href="#questions">questions:</a>{#toc-questions}</li>
+<li><a href="#exercise">exercise</a>{#toc-exercise}</li>
+</ul>
+</li>
+<li><a href="#inspect-a-function-body">Inspect a Function
+Body</a>{#toc-inspect-a-function-body}
+<ul>
+<li><a href="#more-about-arguments">More about
+arguments</a>{#toc-more-about-arguments}</li>
+<li><a href="#experiments">experiments</a>{#toc-experiments}</li>
+<li><a href="#questions-1">questions</a>{#toc-questions-1}</li>
+<li><a href="#the-function-body">The function
+body</a>{#toc-the-function-body}</li>
+<li><a href="#assesment">assesment</a>{#toc-assesment}</li>
+</ul>
+</li>
+<li><a href="#collect-save-and-reuse">Collect Save and
+Reuse</a>{#toc-collect-save-and-reuse}
+<ul>
+<li><a href="#accessing-a-function-library">Accessing a Function
+Library</a>{#toc-accessing-a-function-library}</li>
+<li><a href="#writing-your-first-function-library">Writing your first Function
+Library</a>{#toc-writing-your-first-function-library}</li>
+</ul>
+</li>
+<li><a href="#introduced-in-this-chapter">Introduced in this
+Chapter</a>{#toc-introduced-in-this-chapter}
+<ul>
+<li><a href="#commands-and-features">Commands and
+Features</a>{#toc-commands-and-features}</li>
+<li><a href="#functions">Functions</a>{#toc-functions}</li>
+<li><a href="#references">References</a>{#toc-references}</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>Shell Functions, How To Write, Save, Re-use</h1>
+<p>We'll start by composing and executing functions on the command line,
+without recourse to a text editor.</p>
+<p>The functions we'll write in this chapter are short enough to fit on a
+single line. As you get more comfortable writing on the command line,
+expect to write functions extending and wrapping text on the terminal.
+At some point, you will need an editor to write and maintain functions.</p>
+<p>This chapter updates the e-book -- <a href="https://leanpub.com/shellfunctions">Shell
+Functions</a>.</p>
+<p>Each section in this chapter is simple enough to require a half an hour
+of your time. When you've completed these exercises, you will be
+comfortable creating, using, saving and re-using shell functions.</p>
+<p>To get started, here are the few assumptions we make. That you:</p>
+<ul>
+<li>have access to an open terminal window</li>
+<li>can open simultaneous multiple terminal windows</li>
+<li>are running the bash shell</li>
+<li>have executed the <code>man</code>{.verbatim} command, e.g
+<code>$ man man</code>{.verbatim}, we'l use it repeatedly throught out the
+introductory chapters</li>
+</ul>
+<p>The text is sprinkled with links to more detailed treatment of
+fundamental topics. Each chapter has experiments to enable the curious
+reader to grasp the concepts.</p>
+<h2>Write a Shell Function</h2>
+<p>The simplest shell functions may be written on a single line at the
+command prompt. In this section, you will write and use two simple shell
+functions: <code>hello</code>{.verbatim} and <code>today</code>{.verbatim}.</p>
+<h3>Hello World</h3>
+<p>Throughout the book, assume your command prompt is the dollar sign, all
+the examples are entered at the command line.</p>
+<pre><code class="language-example">
+$ ...
+
+</code></pre>
+<p>The <em>Programmer's Birth Announcement</em> is <strong>Hello World!</strong> Type this
+after your command prompt:</p>
+<pre><code class="language-{.bash">: define the hello function
+hello () { echo "Hello World!"; }
+
+: view the function stored in the shell memory
+declare -f hello
+
+: using it, in action
+hello
+
+: here are the results:
+: ---------------------
+</code></pre>
+<p>To work this example, enter each of the un-commented lines, those with
+no leading colon(:), followed by a carriage return. In order, you are:</p>
+<ul>
+<li>defining the function</li>
+<li>seeing how it is stored, and</li>
+<li>using it, in action</li>
+</ul>
+<p>You can see the formal definition of a function from the
+<code>declare</code>{.verbatim} builtin. After typing
+<code>declare -f hello</code>{.verbatim}, you then typed the function name
+<code>hello</code>{.verbatim}, executing the function. You see both results at the
+end.</p>
+<p>Note, the declared version of your function has been slightly
+reformatted. More on that later.</p>
+<h3>More interesting</h3>
+<p>Arguments, like file names and options make functions more useful. But
+before looking at how arguments are used, whet your appetite with this
+one, called <code>today</code>{.verbatim}</p>
+<pre><code class="language-{.bash">today () { date +%Y%m%d; }
+declare -f today
+today
+: --------------
+</code></pre>
+<p>Type the definition and invoke your new function <code>today</code>{.verbatim}.
+Since <strong>date</strong> takes almost any upper- or lower-case letter, we'll deal
+with those later as arguments. Here's a search for <a href="https://www.unix.com/man-page/Linux/1/date/">Unix Date Man(ual)
+Page</a>. On that page, the
+FORMAT arguments appear after the plus (+) sign.</p>
+<p>You'll probably deduce how these arguments are interpreted.</p>
+<pre><code class="language-example">%Y  four digit year
+%m  two digit month
+%d  two digit date
+</code></pre>
+<h2>Use Function Arguments</h2>
+<p>In the last exercise you used the <code>date</code>{.verbatim} command in a
+function -- in a very limited way. You saw the date command with upper-
+and lower-case options. Without going in great detail, a date option is
+a plus sign (+) followed by any number of percent sign - single letter
+pairs. The format may contain any text; be sure to quote an argument
+which has embedded spaces. e.g.:</p>
+<pre><code class="language-{.bash">
+date "+%a %b ... and some message"
+: --------------
+</code></pre>
+<h3>The first argument</h3>
+<p>In this exercise, write a helper function to remind you what each of the
+many options return. e.g. <em>what does "date +%a" return</em>, and so forth.
+Your function will display the letter argument, and the "date" result of
+using it.</p>
+<p>Since the <strong>date</strong> command permits a formatting option, you might have
+done this:</p>
+<pre><code class="language-{.bash">
+date "+Y: %Y"
+: -----------
+</code></pre>
+<p>Now, to write the function <code>dateArg</code>{.verbatim}, replace the specific
+<strong>option</strong> parameters with a <strong>positional parameter</strong>, and call the
+function with an <strong>argument</strong></p>
+<pre><code class="language-{.bash">dateArg () { date "+$1: %$1"; }
+: omit the declaration, call with a few arguments
+dateArg c
+dateArg F
+
+: --------------
+</code></pre>
+<p>The important lesson here: to convert a command into a function, you
+wrap the command with:</p>
+<ul>
+<li>a name, in this case <code>dateArg</code>{.verbatim}</li>
+<li>a set of parenthesis <code>()</code>{.verbatim},</li>
+<li>a opening (left <code>{</code>{.verbatim} ) brace,</li>
+<li>the text of the command.</li>
+<li>a closing semi-colon, brace ( <code>;}</code>{.verbatim} )</li>
+</ul>
+<p>In a subsequent lesson, we'll go the the command history to take
+advantage of having typed the command, and add the wrapper to make it
+into a function.</p>
+<p>Note that the <em>c</em> and <em>F</em> arguments are a composite option, each
+printing a useful representation of the date.</p>
+<h2>Introducing Shell Syntax, the For Loop</h2>
+<p>With the strong hint that there is quite a bit of information hidden behind
+the upper- and lower-case parameters to the date command, let’s see if we can easily give ourselves a reminder.</p>
+<pre><code class="language-example">
+for var in list ; do command(s) using var ... ; done
+</code></pre>
+<p>The syntax elements in that statement:</p>
+<p><strong>for</strong> ... <strong>in</strong> <strong>; do</strong> ... <strong>; done</strong></p>
+<p>where the <em>var</em> becomes a shell variable name, which takes on the values
+of the respective members of the <em>list</em> and invoked as <code>$var</code>{.verbatim}
+the "value" of the variable and the <em>commands</em> are;</p>
+<ul>
+<li>built-in shell commands,</li>
+<li>executable file commands,</li>
+<li>defined functions, and</li>
+<li>commands with input/output direction</li>
+</ul>
+<p>Any of the commands may take arguments, and multiple commands must be separated with semi-colons. <em>do</em> and <em>done</em> may appear on separate lines in a function, which effectively replaces the need for a separating
+semi-colon.</p>
+<h3>Individual Arguments</h3>
+<p>Now using the syntax of the <code>for</code>{.verbatim} loop, the
+<code>dateArg</code>{.verbatim} function is executed once for each argument in the
+<em>list</em> and produces the results seen here.</p>
+<pre><code class="language-{.bash">dateArg () { date "+$1: %$1"; }
+echo ----------
+for opt in a c d F Y; do dateArg $opt; done
+echo ----------
+</code></pre>
+<p>The for loop assigns the separate arguments in sequence to the shell
+variable (<code>$opt</code>{.verbatim}), evaluated as the one positional parameter
+of the <code>dateArg</code>{.verbatim} function.</p>
+<p>You have assigned the first positional parameter, and you can likely
+figure out how to deal with the second, third, ... etc. Also, notice, if
+you haven not done this before, you have just assigned and used a <strong>shell
+variable</strong>, in this case the variable <code>opt</code>{.verbatim}. You assign it
+just by the name, and (in the for loop) substitute the value with a
+leading dollar sign: <code>$opt</code>{.verbatim}. So, in this case,
+<code>dateArg</code>{.verbatim} is invoked in succession with the <em>list</em> members:
+<code>a c d F Y</code>{.verbatim}.</p>
+<h3>Multiple Arguments</h3>
+<p>The bash shell offers a syntactic feature which offers some convenient
+shorthand to investigate all the parameter options here, called <a href="https://www.gnu.org/software/bash/manual/html_node/Brace-Expansion.html#Brace-Expansion">Brace
+Expansion</a>.</p>
+<p>A simple example gets us started.</p>
+<pre><code class="language-{.bash">
+echo -------------
+echo a{d,c,b}e
+echo -------------
+echo {10..13}
+echo -------------
+</code></pre>
+<p>The first example shows the general case. Three arguments are generated, one each for the letters d, c, and b, each of which is placed
+immediately between the letters a and e. A leading or trailing comma is
+instructive.</p>
+<p>The latter example shows that sequences are available from the intervening ''..'' syntax. Let’s use that to investigate each lower- and upper-case letter.</p>
+<pre><code class="language-{.bash">dateArg () { date "+$1: %$1"; }
+echo ----------
+declare -f dateArg
+echo ----------
+for opt in {a..z}; do dateArg $opt; done
+echo ----------
+</code></pre>
+<p>Of special note are the ''n'' and ''t'' arguments. You can
+likely distinguish their meaning.</p>
+<p>Now, some of your explanations come easier. Since the day, the hour or
+the minutes many be the same number, some letter options may give the
+same result, and therefore, still be ambiguous.</p>
+<h3>The For loop</h3>
+<p>Having just seen our first control syntax item, the <code>for</code>{.verbatim}
+loop, we now use this to create a function to handle common looping
+needs.</p>
+<p>The syntax of the <em>for loop</em> is given by these elements</p>
+<ul>
+<li><code>for</code>{.verbatim}</li>
+<li><code>in</code>{.verbatim}</li>
+<li><code>; do</code>{.verbatim}</li>
+<li>and <code>; done</code>{.verbatim}</li>
+</ul>
+<p>as here:</p>
+<p>for <em>var</em> in <em>list</em> ; do <em>command(s) using $var ...</em> ; done</p>
+<p>This example suffices, demonstrating our first</p>
+<ul>
+<li>shell variable: <em>$opt</em></li>
+<li>used a a <em>function argument</em>,</li>
+<li>setting a <em>positional parameter</em>.</li>
+</ul>
+<p>The variable name <em>opt</em> is retrieved by value with a <em>$opt</em>, passed as
+the first argument to the <code>dateArg</code>{.verbatim} function, and used twice
+in that function to show the argument value, <code>$1:</code>{.verbatim} and the
+effect of the <code>date</code>{.verbatim} command to accept the formatting option.
+<code>+ ... %</code>{.verbatim}.</p>
+<hr />
+<p>Of special note are the ''n'' and ''t'' arguments. You can
+likely distinguish their meaning.</p>
+<p>Now, some of your explanations come easier. Since the day, the hour or
+the minutes many be the same number, some letter options may give the
+same result, and therefore, still be ambiguous.</p>
+<p>You've assigned the first positional parameter, and you can likely
+figure out how to deal with the second, third, ... etc. Also, notice, if
+you haven't done this before, you've just assigned and used a <strong><strong>shell
+variable</strong></strong>, in this case the variable <em>opt</em>. You assign it just by the
+name, and (in the for loop) substitute the value with a leading dollar
+sign: <strong><strong>$opt</strong></strong>. So, in this case, <strong><strong>dateArg</strong></strong> is invoked with
+each of the lower case letters since the <em>{a..z}</em> list expands into the
+list. Limited subsets are possible, as are the Upper Case and numbers,
+which work as well:</p>
+<pre><code class="language-{.bash">echo {10..13}
+</code></pre>
+<p>Now you will work with the <em>for</em> syntax to produce a <strong><strong>foreach</strong></strong>
+function that handles many loop requirements.</p>
+<p>You will use the built-in <em>shift</em> command to control our positional
+parameters, and the <em>local</em> command to define a variable.</p>
+<p>The shell has other useful looping constructs, namely the <em>while</em> loop.
+Our focus here, the <em>for</em> loop. The while loop is useful in situations
+where the loop test may be more complicated than <em>is there another
+argument to deal with?</em></p>
+<p>We will use the for loop to write a function from the a prior exercise
+with function arguments, namely;</p>
+<pre><code class="language-example">foreach dateArg {a..z}
+dateArg () { date "+$1: %$1"; }
+</code></pre>
+<p>So, the reason for the foreach function should now be clear:</p>
+<ul>
+<li>execute the first argument, a function or command,</li>
+<li>for each of the remaining arguments.</li>
+</ul>
+<p>The bash shell has the syntactic sugar <em>{a..z}</em> to produce the lower
+case letters as separate arguments in any command.</p>
+<h3>The <em>for</em> syntax</h3>
+<p>Recall the earlier example with the <strong><strong>dateArg</strong></strong> function:</p>
+<p><em>for var in list... ; do command(s) using $var ...; done</em></p>
+<p>specifically:</p>
+<pre><code class="language-example">
+for opt in {a..z}; do dateArg $opt; done
+
+</code></pre>
+<p>If you don't have your <strong><strong>dateArg</strong></strong> function handy, re-enter it now.
+Then type the above command to execute it. Notice the generic opt
+argument could be any relevant name. Also, notice the position of the
+dateArg function; it is called once per lower-case letter.</p>
+<h3>The foreach function</h3>
+<p>Enter this text to create the function and test it. Recall the lesson
+with the <code>dateArg</code>{.verbatim} function: once you've typed the function
+on the command line, it's quite easy to wrap it to convert it into a
+function.nnnn The inspiration came from training programmers in the Tcl
+(pr. "tickle") language which has the feature. The shell function
+reads like this</p>
+<p><strong>foreach</strong> argument, execute <strong>this function</strong> on these <strong>arguments</strong></p>
+<pre><code class="language-{.bash">
+foreach () { local cmd=$1; shift; for arg in $@; do $cmd "$arg";  done; }
+dateArg () { date "+$1: %$1"; }
+declare -f foreach
+echo ----------    
+echo foreach dateArg '{a..z}'
+echo ----------
+foreach dateArg {a..z}
+echo ----------
+echo fbdy foreach dateArg
+echo ----------
+fbdy foreach dateArg
+</code></pre>
+<p>Note the ease of displaying functions.</p>
+<h3>questions:</h3>
+<ul>
+<li>compare the <strong><strong>foreach</strong></strong> function with the <em>for</em> command</li>
+<li>notice the additional syntax in the function</li>
+<li>explain what the <em>shift</em> keyword does.</li>
+<li>did you notice how the function body was displayed?</li>
+<li>what is the meaning of the <em>local</em> keyword</li>
+</ul>
+<h3>exercise</h3>
+<ul>
+<li>run the example with the Upper Case letters.</li>
+</ul>
+<h2>Inspect a Function Body</h2>
+<p>In this section, you will:</p>
+<ul>
+<li>use wild-card parameters</li>
+<li>use numeric parameters</li>
+<li>use default parameters</li>
+<li>evaluate a deferred expression</li>
+<li>set positional parameters</li>
+<li>create a function to display functions</li>
+</ul>
+<p>Recall, in a [previous section], you were asked</p>
+<p><em>what would you name a function to display a Function BoDY</em>?</p>
+<p>I think we'll call it <strong><strong>fbdy</strong></strong>.</p>
+<p>To review:</p>
+<pre><code class="language-example">1   $ declare -f hello
+2   hello () 
+3   { 
+4       echo "hello world"
+5   }
+6   $
+
+</code></pre>
+<p>By the way, if you've logged off and logged back in since the previous
+section, you've lost the function definition and will have to re-enter
+it. In a future exercise, you will learn a simple means to recover your
+work from day-to-day, session-to-session.</p>
+<h3>More about arguments</h3>
+<p>To this point, we have only used the first positional parameter; here we
+see how to refer to individual arguments, something more than the
+successive parameters in an argument list.</p>
+<p>In addition to the numbered positional parameters: 1, 2, 3, ... you will
+learn of other parameter features. Introductory features express all
+positional parameters, report the number of positional parameters, and
+assigning a default value to a positional parameter. So here's how to
+set positional parameters.</p>
+<p>Enter these commands</p>
+<pre><code class="language-example">    1   set a b c    # set 3 positional parameters to a b c
+    2   echo $@      # show them
+    3   echo $#      # how many?
+    4   echo here is One: $1
+    5   eval echo here is the last one: \$$#
+    6   echo here is Two: $2
+7   echo here is Two: ${2:-Two}
+    8   echo here is Four: ${4:-four}
+
+</code></pre>
+<p>Notice the use of <em>eval</em> in the fifth example. At the end, <em>escape</em> the
+first dollar sign, and the second one inserts the number of the last
+parameter. The <em>eval</em> defers the evaluation until the parameter
+substitution is made. Therefore the <em>echo</em> command sees "here is the
+last one: $3"</p>
+<p>Also note the # symbol. It sets off a shell comment. Shortly we'll
+introduce a more useful means, and note the reason why.</p>
+<p>The last two steps demonstrate the use of the <strong><strong>default</strong></strong> argument
+if the positional parameter is set on not.</p>
+<h3>experiments</h3>
+<p>Experiment with other arguments to the set command.</p>
+<pre><code class="language-example">
+$ set - x          # turns on command tracing
+$  ...             # execute some commands, before you
+$ set +x           # turn it off
+$ set +x a b c     # also sets 3 parameters
+
+</code></pre>
+<p>You may use a "set --" convention to set the positional parameters.
+Though it's not necessary. Experiment with other choices.</p>
+<pre><code class="language-example">
+$ set -- one Two seven # replaces any previous setting, as does
+$ set $3 four five     # keep one, add others
+$ set $@ six seven     # keep all, add a few
+$ set one $@           # ...
+
+</code></pre>
+<h3>questions</h3>
+<p>In the examples, what do you understand:</p>
+<ul>
+<li>what the at sign ''($@)'' means?</li>
+<li>what the sharp/hash ''($#)'' means?</li>
+<li>what does the <em>eval</em> command do? hint: omit it from the command
+line.</li>
+</ul>
+<p>In the next section we will see ho to use the positional parameters
+within a function.</p>
+<h3>The function body</h3>
+<p>You can take advantage of this information to write a function that
+returns a function. As you write this function, think of <em>what is a good
+<strong><strong>default</strong></strong> argument?</em> Enter these, a line at a time:</p>
+<pre><code class="language-example">1 $ declare -f hello                   # as before
+2 $ fbdy () { declare -f $1; }         # the simple version
+3 $ fbdy hello                         # same as before
+4 $ fbdy fbdy                          # no kidding!, so why not ...
+5 $ fbdy () { declare -f ${1:-fbdy}; } # so ...
+6 $ fbdy                               # shows how to do it!, and
+7 $ fbdy () { declare -f ${@:-fbdy}; } # permits ...
+8 $ fbdy hello fbdy                    # whew, let's take a break
+</code></pre>
+<p>Note, to this point we have not had to use an editor to compose the few
+functions we've introduced. It's a useful feature, but not one we'll
+push to extremes.</p>
+<p>At step 5, we introduced the notion of a <em>convenient default</em>. The idea
+of a convenient default is to <em>self-document</em> a function. This one is so
+simple, with a so-suggestive name, it's prime value is to introduce the
+technique, with increasing payback over time.</p>
+<p>Not the changes from steps 5 thru 8. This time the introduction of the
+wild-card <em>all the arguments</em>. Take every opportunity to use that
+feature. Only restricting to specific arguments when necessary.</p>
+<ol>
+<li>
+<p>questions</p>
+<ul>
+<li>were you able to follow each step?</li>
+<li>what does the final <strong><strong>fbdy</strong></strong> do with no arguments?</li>
+</ul>
+</li>
+</ol>
+<h3>assesment</h3>
+<p>Review if necessary, your understanding of</p>
+<ul>
+<li>wild-card parameters</li>
+<li>default parameters</li>
+<li>setting positional parameters</li>
+<li>how the function body is displayed. hint: search <em>bash shell
+declare</em></li>
+</ul>
+<ol>
+<li></li>
+</ol>
+<h2>Collect Save and Reuse</h2>
+<p>Before we get ahead of ourselves lets use the tools we now have to
+collect our functions, save them in a function library, and see how we
+can re-us them in subsequent sessions on the computer.</p>
+<p>Lets anticipate what we need to arrive at the last step.</p>
+<h3>Accessing a Function Library</h3>
+<p>The shell builtin, <em>source</em> reads a <strong><strong>file</strong></strong> into the current shell
+as if's contents had been typed at the command line. We already have
+the means to store our functions into a file, at this point without
+having used a text editor. Nor will we have to use one just yet.</p>
+<p>I find it useful to store the functions in an executable file on your
+PATH. When you login, you are running a terminal shell, in our case
+<em>bash</em>. Confirm this by running this command:</p>
+<pre><code class="language-example">
+$ echo $SHELL
+/usr/local/bin/bash
+$ ...
+</code></pre>
+<p>Which in this case is in the <em>usr/local/bin</em> <strong>directory</strong>. If you</p>
+<pre><code class="language-example">
+$ echo $PATH
+/Users/martymcgowan/bin:/Users/martymcgowan/git/dfg/bin: ....
+...:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:...
+$ ...
+</code></pre>
+<p>you see the directories on your PATH were you will find the executable
+files. More later on selecting and adding directories to your PATH. If
+you are on a well-administered system, your system administrator will
+have set up a default PATH when you login.</p>
+<p>I recommend you put your function library in a <em>./bin</em> directory, and
+personally use files whose name ends in <em>lib</em>. Prepare to store your
+library:</p>
+<pre><code class="language-example">
+$ mkdir $HOME/bin
+$ PATH=$HOME/bin:$PATH    # put this in your ~/.bash_profile
+$...
+</code></pre>
+<p>Where <strong><strong>~</strong></strong> is a shorthand for your <em>$HOME</em> directory.</p>
+<h3>Writing your first Function Library</h3>
+<p>At last, the payoff. making you have the functions defined in your
+current session. Just in case, here they are.</p>
+<pre><code class="language-example">$ hello () { echo "Hello World!"; }
+
+$ dateArg () { date "+$1: %$1"; }
+$ fbdy () { declare -f ${@:-fbdy}; }
+$ foreach () { local cmd=$1; shift; for arg in $@; do $cmd $arg; done; }
+</code></pre>
+<p>Enter them by typing on the command line. Now execute this command:</p>
+<pre><code class="language-{.shell">
+$ fbdy hello today dateArg fbdy foreach | tee $HOME/bin/ch01lib
+hello () 
+{ 
+    echo "Hello World!"
+}
+today () 
+{ 
+    date +%Y%m%d
+}
+dateArg () 
+{ 
+    date "+$1: %$1"
+}
+fbdy () 
+{ 
+    declare -f ${@:-fbdy}
+}
+foreach () 
+{ 
+    local cmd=$1;
+    shift;
+    for arg in $@;
+    do
+        $cmd $arg;
+    done
+}
+$ chmod +x $HOME/bin/ch01lib
+
+</code></pre>
+<p>The last command makes the file executable, so when you return, you may</p>
+<pre><code class="language-example">
+$ source ch01lib  # reading your functions into your shell
+</code></pre>
+<h2>Introduced in this Chapter</h2>
+<h3>Commands and Features</h3>
+<p>command or concept     category</p>
+<hr />
+<p>chmod                  command
+date                   command
+declare                shell builtin
+echo                   command
+eval                   shell builtin
+file                   object
+for                    shell keyword
+function               shell keyword
+HOME                   shell variable
+local                  shell builtin
+mkdir                  command
+parameter expansion    concept
+PATH                   shell variable
+positional parameter   concept
+set                    shell builtin
+shell variable         object
+shift                  shell builtin
+source                 shell builtin
+tee                    command
+unix manual page       object</p>
+<p>Help is close at hand:</p>
+<pre><code class="language-{.shell">
+man chmod    # for the concise details of a command (chmod)
+help -m for  # ... of a shell keyword (for) or builtin
+man man      # and
+help -m help # be sure to read the Options
+
+</code></pre>
+<h3>Functions</h3>
+<ul>
+<li>dateArg</li>
+<li>fbdy</li>
+<li>foreach</li>
+<li>hello</li>
+<li>today</li>
+</ul>
+<h3>References</h3>
+<ul>
+<li>bash shell <a href="https:/en.wikipedia.org/wiki/Bash_(Unix_shell)">https:/en.wikipedia.org/wiki/Bash_(Unix_shell)</a></li>
+<li>date manual page <a href="https://duckduckgo.com/?q=unix+date+man+page">https://duckduckgo.com/?q=unix+date+man+page</a></li>
+<li>GNU Shell Functions
+<a href="https://www.gnu.org/software/bash/manual/html_node/Shell-Functions.html">https://www.gnu.org/software/bash/manual/html_node/Shell-Functions.html</a></li>
+<li>one sh-bang
+<a href="https://mcgowans.org/pubs/marty3/commonplace/software/onlyOneShBang.html">https://mcgowans.org/pubs/marty3/commonplace/software/onlyOneShBang.html</a></li>
+<li>shell builtin
+<a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html">https://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html</a></li>
+<li>shell functions ebook <a href="https://leanpub.com/shellfunctions">https://leanpub.com/shellfunctions</a></li>
+<li>shell keyword
+<a href="https://www.gnu.org/software/bash/manual/html_node/Reserved-Word-Index.html">https://www.gnu.org/software/bash/manual/html_node/Reserved-Word-Index.html</a></li>
+<li>shell tutorial <a href="https://www.shellscript.sh/">https://www.shellscript.sh/</a></li>
+<li>terminal shell <a href="https://cloud.google.com/shell">https://cloud.google.com/shell</a></li>
+</ul>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

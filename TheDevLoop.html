@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/TheDevLoop.md">
+    
+    <title>TheDevLoop - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/TheDevLoop.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>The Development Loop</h1>
+<p>Functions, many  of whom are  already in  a library, while  others are
+being written on  the command line.</p>
+<p>Here is the <a href="./Development.html">Table of Contents</a></p>
+<h2>A single function</h2>
+<p>To store a single function in a function library:</p>
+<pre><code>whlib a_function    # returns a library name, or not
+set a_function; shd_setdate $1 | tee -a $(whlib $1)
+	
+</code></pre>
+<p>Or if the function is not already in a library, the <code>libfun</code> function
+returns the directory name of the function libraries:</p>
+<pre><code>libfun ls      # lists the files in the directory, so then
+shd_setdate $1 | tee -a $(libfun)/somelibraryname   # is sufficient
+</code></pre>
+<h2>A Collection of Functions</h2>
+<p>Here we discuss the treatment of each type. Special attention is given
+to:</p>
+<ul>
+<li>updating a single function to library</li>
+<li>isolating the editing of new, or modified functions</li>
+<li>a local backup process for individual functions</li>
+<li>updating a group of functions to their common library</li>
+<li>backing up the libraries</li>
+<li>building a function data base</li>
+<li>updating the Changelog</li>
+</ul>
+<p>The latter two features are given  a short introduction, in this note.
+As they develop, more comprehensive papers will deal with operational
+and organization detail and challenges.</p>
+<h2>A bit of History</h2>
+<p>The  strategy  I'm using  recognizes,  after  months of  trying  other
+alternatives,  that  a file  per  function  has many  advantages  over
+editing a  well-populated library,  one a  few hundred  functions. The
+recent lesson came  when sourcing a such a library  and encountering a
+syntax  error.  A  syntax  error in  the 37th  function  might not  be
+exposed until  the 103rd  function.  After using  a divide-and-conquer
+strategy: e.g. "which half of the library has the syntax error?" etc..
+the natural solution showed itself.  Rather than:</p>
+<pre><code>    source filewith300lib 
+	  
+</code></pre>
+<p>and seeing a  report <code>syntax error: line 737, missing  "</code>, this is now
+the approach:</p>
+<pre><code>    mkdir .tmp
+	f2file filewith300lib .tmp 
+		
+</code></pre>
+<p>creates a file per function in the .tmp directory; then</p>
+<pre><code>    pushd .tmp
+	foreach source *
+		
+</code></pre>
+<p>exposes the individual functions with syntactic errors. Then when the
+files are succesfully edited and unit-tested, they may be returned to
+their appropriate library.</p>
+<pre><code>    cat * | tee ../filewith300lib # and for safety sake
+	backup ../filewith300lib
+</code></pre>
+<p>this sequence with  some modification, is the basis  for shell library
+development.</p>
+<h2>Modifying Existing Functions</h2>
+<p>When an  existing function  needs modification, the  <code>f1file</code> function
+delivers a copy to the <code>.dev</code>  directory which is directly below where
+the function libraries are collected.   Then repeat the process of returning
+the updated function to it's own library.   Here's a manual sequence</p>
+<ol>
+<li>pushd .dev      # where the fixed functions are edited</li>
+<li>xdd             # sets DEV_DIR to current directory</li>
+<li>edit func       # writes func in DEV_DIR</li>
+<li>func            # and test it</li>
+<li>set func ...    # sets the file names to positional params, 1, 2,,</li>
+<li>source $1       # the function is now in the Environment</li>
+<li>old_now $1      # difference between the function and ...</li>
+<li>lib=$(whlib $1) # where is its library copy</li>
+<li>shd_setdate $1 | tee -a $lib # restore the date-stamped copy</li>
+<li>backup $1       # the function copy</li>
+<li>rm -f $1        # its no longer needed in the .dev directory</li>
+</ol>
+<pre><code>		
+</code></pre>
+<p>This sequence is captured in <code>quthl</code></p>
+<h2>A Debugging Sequence</h2>
+<p>On successive command lines:</p>
+<pre><code class="language-sh"> set bin/{mk,.herd/copy}lib ;
+ off; bashlibs pushd; cdx; foreach source $@; on; indir src mk_chapters; 
+ write_chapters
+ 
+</code></pre>
+<ol>
+<li>set ... - two library names: bin/mklib, bin/.herd/copylib</li>
+<li>off ... -
+a. turn off debugging
+a. pushd ( go to )  bashlibs directory
+a. cdx -- clears duplicates from the directory stack
+a. foreach -- sources the libraries in that order, the .herd is for latest tests
+a. on -- turn on debugging
+a. indir -- load the function being edited</li>
+<li>write ... test the changes</li>
+</ol>
+<h2>New Functions from the Command Line</h2>
+<h2>The Libraries</h2>
+<h2>The Function Database</h2>
+<h2>The Changelog</h2>
+<p>The discussion here supports lessons learned in producing the
+<a href="./changelog.html">Changlelog</a></p>
+<h2>Supporting Functions</h2>
+<ul>
+<li><code>f1file</code></li>
+<li><code>f2file</code></li>
+<li><code>foreach</code></li>
+<li><code>old_now</code></li>
+<li><code>quthl</code></li>
+<li><code>shd_setdate</code></li>
+<li><code>whlib</code></li>
+</ul>
+<p>Where <code>backup</code> is really an application, yet a single function</p>
+<h2>Documents</h2>
+<p>See the  <a href="./Development.html">documents index</a>,</p>
+<p>And, in process, where here is the defining
+<a href="https://daringfireball.net/projects/markdown/syntax#link" title="Markdown Link Syntax">link syntax</a> and in pandoc, the
+<a href="https://pandoc.org/MANUAL.html#pandocs-markdown" title="search for &#x27;Reference links&#x27;">similar (link) reference</a>.</p>
+<!--
+
+    just your HTML Comment Convention
+
+    [mdls]:  ???
+  -->
+<h1>Concept</h1>
+<h2>Reference</h2>
+<pre><code>	
+</code></pre>
+<ul>
+<li>whlib</li>
+<li>shd_setdate</li>
+<li>libfun</li>
+<li>debug</li>
+<li>pause</li>
+</ul>
+<h2>Definition</h2>
+<ul>
+<li></li>
+</ul>
+<h2>deprecated</h2>
+<ol>
+<li></li>
+</ol>
+<p>--&gt;</p>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

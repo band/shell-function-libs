@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/WhatsDifferent.md">
+    
+    <title>WhatsDifferent - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/WhatsDifferent.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>What's Different Here</h1>
+<p>While our wider subject is bash shell libraries, how to organize and
+maintain them, a few words on the function itself will alert you to
+new developments I've found helpful.  Your first surprise is that
+"it's functions all the way down" If you're unfamiliar with the
+reference, read <a href="https://en.wikipedia.org/wiki/Turtles_all_the_way_down">this little joke about
+turtles</a>.
+Like the turtle, the function is the building block of any shell
+application.</p>
+<p>Here's the <a href="./Development.html">Table of Contents</a></p>
+<h2>New Concepts</h2>
+<!-- begin concept -->
+<ol>
+<li>
+<p>We'll focus on shell function libraries, collections of functions,
+and how collections are named and gathered into libraries.  Small
+functions are often born on the command line, tested as individual
+<code>file functions</code>.  Rather than editing libraries, tested functions
+are appended to an appropriate library.</p>
+</li>
+<li>
+<p>This is the next to last place you'll find any mention of a
+<code>shell script</code> since we're working with shell functions and their
+collections. Thus an individual high-level function may be treated
+like an <code>app</code>.</p>
+</li>
+<li>
+<p>We'll frequently use the shell <code>pretty printer</code>, the <strong>declare</strong>
+built-in command with the minus <code>f</code> flag, thusly:</p>
+<pre><code>  $ declare -f  some_function 
+</code></pre>
+<p>formats the shell syntax in a standard and consistent manner,
+highlighting the decision, looping syntax, consistent function
+naming. It rejects the sharp comment, preferring the null-command
+format comment.</p>
+</li>
+<li>
+<p>A colon <strong>( : )</strong>, a <code>null-command</code> may be used as a
+shell comment. Here, it is the preferred shell comment.</p>
+</li>
+<li>
+<p>The null command has useful default properties, whose conditions
+require respect for it's limitations.  The null command opens the
+door to three previously unrealized features in shell programming,
+namely:</p>
+<pre><code> the `shdoc` -- think javadoc, pydoc in those languages,
+ an `abstract` -- the first line of the shdoc, 
+ and the `tag` -- where this todo is a sample
+</code></pre>
+<p>an example of a tag-line:</p>
+<pre><code> : todo: factor this function into three parts; 
+</code></pre>
+<p>The null command deserve an <a href="./TheNullCommand.html">entire chapter</a>.</p>
+</li>
+<li>
+<p>A <code>smart file</code> is a function returning an object, such as a file
+or directory, another function or a list of these. An example</p>
+<pre><code>smartpair () { ${*:-echo} $HOME/lib/{smart,pair}; }
+</code></pre>
+<p>whose default behavior returns the names of two files or directories,</p>
+<pre><code> $ smartpair
+ /Users/home/lib/smart
+ /Users/home/lib/pair
+</code></pre>
+<p>or with an argument:</p>
+<pre><code> $ smartpair ls -l 
+
+ -rw-r--r--  1 home  staff  0 Apr  6 12:24 /Users/home/lib/pair
+
+ /Users/home/lib/smart:
+ total 0
+ -rw-r--r--  1 home  staff  0 Apr  6 12:34 bar
+ -rw-r--r--  1 home  staff  0 Apr  6 12:34 foo
+</code></pre>
+</li>
+<li>
+<p>A <code>family</code> is a collection of functions sharing a naming
+convention:</p>
+<pre><code> {fam}_{sub}
+</code></pre>
+<p>where the the "fam" is the family name and the "sub" is a unique
+sub-function in the family.   The family name may also be a function.
+The <em>backup</em> family is one such.</p>
+<p>Many sub-function names are hardly uniquely. Such are <em>init, help,
+test, doc,</em> and <em>list</em>.  Sub-names may occasionally use a sub name.
+For example, <em>fam_sub_test</em>.  A family of functions will typically
+all be found in the same library.</p>
+</li>
+<li>
+<p>While promoting shell libraries, where a library is a collection of
+functions in a file, there are two uses for a single function per
+file, called a <code>function file</code>.  A [function database] of all
+working functions is built in parallel to the development and
+run-time function libraries. The database is little more than
+library-named directories with a file per function in those
+directories.</p>
+</li>
+</ol>
+<pre><code>	
+</code></pre>
+<h2>Applications</h2>
+<p>Within the collection of libraries, two applications stand out.</p>
+<p>One, <code>backup</code> is expressed in a single function, with its own
+collection of supporting functions.  It does just that: backup files
+of any type. Here as <a href="./Backup.html">The Only Backup You'll Ever Need</a>.
+Its use promotes a <a href="./SimpleVersion.html">Simple Versioning</a> system.</p>
+<p>The other application is a text-file based database which I'm pleased
+to have used for decades.  It's named <a href="./UnixRelationalDB.html">/RDB</a>,
+"slash_R_D_B".</p>
+<p>Another facet of my work is a set of tools to convert collections of
+functions into an application.  For example, the calling tree of the
+backup function is on the order of 40 functions. Collecting those into
+an application means rounding up all the subordinate functions into a
+single file where the various entry points are accessible in one <code>app</code>
+whose opening line will be the familiar <code>sh-bang</code>.</p>
+<h2>Reference</h2>
+<ul>
+<li>abstract</li>
+<li>family</li>
+<li>file function</li>
+<li>null-command</li>
+<li>pretty printer</li>
+<li>shell script</li>
+<li>shdoc</li>
+<li>smart file</li>
+<li>tag</li>
+</ul>
+<h2>Definition</h2>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/DocumentWriting.md">
+    
+    <title>DocumentWriting - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/DocumentWriting.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>Document Writing Tools</h1>
+<p>After some use of <code>emacs</code> <code>OrgMode</code>, I've at last settled on <code>pandoc</code>
+and its helpful extension <code>pandoc-include</code>.  In the plethora of
+<code>Markdown</code> formats, pandoc's is my choice, and I'm not looking
+further.</p>
+<p>This chapter is the <em>User's Guide</em> to the tools I'm developing around
+pandoc's Markdown.  The principal here is to use <code>Unix</code> utilities in
+<code>bash</code> functions to collect functions into the document, possibly edit
+them using <code>file function</code>s and directory names to support different
+collections of the chapters.</p>
+<p>Here's the <a href="./Development.html">Table of Contents</a></p>
+<h2>Development Lessons</h2>
+<p>As an ardent user of the <code>make</code> utility in my more active programming
+days, I now feel it sufficient to use a simple <code>newest</code> function to
+detect files which need updating..</p>
+<p>Here I'll walk myself thru the code updates to add multi-docuent features
+to the tools.</p>
+<p>I'm inventing a new naming convention to collect functions in groups
+in a library.  It goes like this <em>libname</em><em>fence</em><em>group</em>.  Where libname
+is the name of the library file, <code>fence</code> is the literal subfunction,
+and 'group' distinguishes the collection of function.  As it's a work in
+progress, I'll add content here, or discard if the notion doesn't work
+as hoped.</p>
+<p>For the moment, let's get into the functions needed to separate the copies.</p>
+<h2>Users Guide</h2>
+<h2>Functions</h2>
+<p>This seems a good place to describe a useful function, namely
+<code>functions</code> which reads the either the <code>stdin</code>, or name function
+arguments.  Also, to demonstrate the <code>canonical</code> function format.</p>
+<pre><code>Here is the `functions` function
+</code></pre>
+<pre><code class="language-sh">!include ./src/shell/functions
+</code></pre>
+<p>and the <code>function_include</code> function:</p>
+<pre><code class="language-sh">!include ./src/shell/function_include
+</code></pre>
+<pre><code>	
+</code></pre>
+<p>and used:</p>
+<pre><code>    $ cat library ... | functions   # or
+	$ set | functions               # from the Environment
+	$ functions library ...         # identical to cat ...
+		
+</code></pre>
+<p>where in the first instance the bash functions defined in the library
+... files are listed in the order encountered.  In the second
+instance, the functions defined in the process's <code>environment</code> are
+listed. The latter instance is similar to the first in that the
+individual library ...  files are individually read by the function,
+by the <strong>$@</strong> arguments.</p>
+<p>The <code>awk</code> utility uses a common convention:</p>
+<pre><code>    in the absence of file arguments, read the standard input
+		
+</code></pre>
+<p>The awk pattern selects context from the input:</p>
+<ul>
+<li>whose 2nd field is precisely '()', and</li>
+<li>whose 1st field does not begin with and underscore, and</li>
+<li>whose 1st field has appeared only for the first time.</li>
+</ul>
+<p>And the action on that line is to print the first field, i.e. the function name.
+This is the definition of the <code>canonical</code> format.</p>
+<h1>Concepts</h1>
+<h2>The Canonical Format</h2>
+<p>A function manually edited in a file must meet those conditions. Note the
+definition of <strong>functions</strong> above.  The first few lines take advantage of
+the <code>null-command</code> as a comment convention, and in this case introduce the
+<code>shdoc</code> or shell document.</p>
+<p>The good news is that a shell function type on the command line is readily
+convered to the canonical format.  A function may be defined on the command line:</p>
+<pre><code>fbdy () { : function bodies; declare -f ${@:-fbdy}; }
+</code></pre>
+<p>and used:</p>
+<pre><code>    $ fbdy
+		
+</code></pre>
+<p>which produces itself:</p>
+<pre><code class="language-sh">!include ./src/shell/fbdy_declare
+</code></pre>
+<h1>Appendices</h1>
+<h2>Reference</h2>
+<ul>
+<li>awk</li>
+<li>bash</li>
+<li>emacs</li>
+<li>environment</li>
+<li>file function</li>
+<li>make</li>
+<li>Markdown</li>
+<li>null-command</li>
+<li>OrgMode</li>
+<li>pandoc</li>
+<li>shdoc</li>
+<li>Unix</li>
+</ul>
+<h2>Definition</h2>
+<ul>
+<li>canonical</li>
+<li>make function</li>
+<li>newest</li>
+<li>smart function</li>
+</ul>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>

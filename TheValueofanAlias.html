@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="fs_path" content="/TheValueofanAlias.md">
+    
+    <title>TheValueofanAlias - Bash Shell Libraries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/style.css">
+    <link rel="stylesheet" href="/nxcTestVault/markpub_static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.12.0/dist/bluesky-comments.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+    <script src="/nxcTestVault/lunr-index-1762211448.3861785.js"></script>
+    <script>var index = lunr.Index.load(lunr_index)</script>
+    
+    
+    <script src="/nxcTestVault/lunr-posts-1762211448.3861785.js"></script>
+    <script> function randomPageLink() { return "/nxcTestVault"+lunr_posts[Math.floor(Math.random() * lunr_posts.length)].link; } </script>
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/nxcTestVault/index.html">Bash Shell Libraries</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/nxcTestVault/README.html">HOME</a></li>
+<li><a href="/nxcTestVault/search.html">SEARCH</a></li>
+<li><a href="/nxcTestVault/all-pages.html">ALL PAGES</a></li>
+<li><a href="/nxcTestVault/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <div> <!-- edit this page button -->
+	<p style="float:right; margin:.5em .5em
+	.5em"><a target="_blank" href="https://github.com/band/nxcTestVault/edit/main/TheValueofanAlias.md"
+	class="edit-this-page-button">Edit on GitHub</a></p>
+	<br clear="all">
+      </div> <!-- edit this page button -->
+      
+      <h1>The Value of an Alias</h1>
+<p>I've long questioned the value of an <em>alias</em> in shell
+programming. I've grown a collection of about 40 but they all see to
+be "one-off"s, which serve as a short-hand to make the shell command
+typing easier.</p>
+<p>That's where we'll leave it for now. Since I've moved most of the
+alias definitions back into function in the <code>family</code> of <code>functions</code></p>
+<p>Here is the <a href="./Development.html">Table of Contents</a>.</p>
+<h2>Alias Location</h2>
+<p>My aliases are found in ~/.alias.rc, and sourced from
+the ~/.user profile.</p>
+<p>Besides the <code>alias</code> command itself to show them at any time, I've
+installed a few helpers.</p>
+<ul>
+<li>ag  - an Alias eGrep</li>
+<li>ahelp -  the Alias HELPer</li>
+<li>sava - SAVe the current Aliasesd  ( in ~/.alias.rc )</li>
+<li>ua - User Aliases, the list of the aliases</li>
+</ul>
+<p>At the outset, it's worth noting some aliases are part of a package,
+and are set in the Environment when the package is installed.  Therefore,
+there are a few things to note:</p>
+<ul>
+<li>any alias group listed here may be different then yours.  My newer
+working model is that aliases, as functions belong to a packzge.</li>
+</ul>
+<h2>The Need</h2>
+<p>The paper on <a href="./TheDevLoop.html">The Development Loop</a> addresses the
+challenges when functions have newly been entered or returned home.</p>
+<h2>A Procedure</h2>
+<p>Here's the process I'm going thru to restore a group of file functions
+to their appropriate library, which is either the library where the
+function is defined, or a library with the most affiliated functions,
+either called by or called from:</p>
+<ol>
+<li>
+<p>split the list of file functions into <em>solos</em> or <em>homed</em>, solos
+having no home library.</p>
+</li>
+<li>
+<p>for the <em>homed</em>, either</p>
+<ol>
+<li>if the function is identical to its homed self, back it up and
+remove any local copy</li>
+<li>if the current local copy is different and ready for update,
+then return it to the home libray</li>
+<li>or it's not, skip it for now.</li>
+<li>select the next <em>homed</em> function, until complete</li>
+</ol>
+</li>
+<li>
+<p>the <em>solo</em> at the moment has not been stored in a <em>home</em>
+library. Look for an existing library to save them in then foreach
+function in the list of *solos</p>
+<ol>
+<li>step thru the list of solos</li>
+<li>if the  solo function is ready, append it  to its intended home,
+backing up, and removing the file function</li>
+<li>or as above, if not ready skip</li>
+</ol>
+</li>
+</ol>
+<h2>The Pieces</h2>
+<h3>functions</h3>
+<h3>aliases</h3>
+<h1>Concept</h1>
+<h2>Reference</h2>
+<ul>
+<li>alias</li>
+<li>family8</li>
+<li>home,d</li>
+<li>home library</li>
+<li>solo,s</li>
+<li>file function</li>
+</ul>
+<h2>Definition</h2>
+<h2>ag</h2>
+<p>For example:</p>
+<pre><code>$ ag `s p`
+</code></pre>
+<p>Grep for <code>s p</code>.  Letter 's', then a space followed by the letter 'p',
+looking for aliases beginning with the letter 'p'</p>
+<p>!include ./src/s_p.txt</p>
+<h2>ahelp</h2>
+<p>!include ./src/ahelp.txt</p>
+<h2>sava</h2>
+<pre><code>
+$ ag sava
+alias sava='a=~/.alias.rc; (alias;echo alias)&gt;$a; backup $a; ahelp'
+~.$
+
+</code></pre>
+<p>Note the use of:</p>
+<ul>
+<li>a shell variable: <strong>a</strong></li>
+<li>a sub-shell: <strong>( ... )</strong></li>
+<li>a local <strong>backup</strong> utility saves, or backs up the alias file</li>
+<li>and <strong>ahelp</strong></li>
+</ul>
+<h2>ua</h2>
+<pre><code>$ ag ua=
+alias ua='alias | sed '\''s/=.*//; s/^alias //'\'''
+$
+</code></pre>
+<p>Note the use of the <strong>=</strong> sign to isolate the alias name</p>
+<pre><code>   $ ua | sed 's/^/### /'
+</code></pre>
+<h2>commands</h2>
+<ul>
+<li><code>ahelp    | md_quote | tee src/ahelp.txt</code></li>
+<li><code>ag 's p' | md_quote  | tee src/s_p.txt</code></li>
+<li><code>open $(pemd AliasDictionary.md)</code></li>
+</ul>
+
+      
+    </div>
+  </div>
+  <script src="/nxcTestVault/markpub_static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Bash Shell Libraries</strong> by applemcg & band.</div>
+    
+    
+    <div>Central repository at <a href="https://github.com/band/nxcTestVault">It is a Test Vault</a>.</div>
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+    <div><em>Site last updated on Monday, November 03, 2025 at 23:10 UTC.</em></div>
+  </div>
+</footer>
+</body>
+</html>
