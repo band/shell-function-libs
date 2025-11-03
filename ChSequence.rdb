@@ -1,0 +1,26 @@
+gseqno	section	file	title	comment
+------	-------	----	-----	-------
+1.1	Introduction	Development.md	State of Development	the "source" is elsewhere
+1.2	Introduction	WhatsDifferent.md	What's Different Here	surprises, maybe
+xx	Introduction	BashShell.md	On Shell Functions	the first e-book
+1.3	Introduction	Philosophy.md	Function Philosophy	a bit philosophical about functiouns
+1.4	Introduction	OnDebugging.md	Debugging Utilities	Turning On, Off Debugger, Pausing
+1.5	Introduction	TheNullCommand.md	The Null Command, Usage, Caution	A new, cautious usage
+2.1	Initial Setup	TheValueofanAlias.md	The Value of an Alias	 I've come to appreciate the concept
+2.2	Initial Setup	TheProfileStory.md	The Profile Story	what every user starts with
+2.3	Initial Setup	onSmartFiles.md	On Smart Files	 Files, Functions, and their lists
+3.1	Libraries	bashlibs.md	bashlibs	the management document, naming conventions
+..	Libraries	AliasValue.md	Value of the Alias	aliases as a command line shortcut
+3.2	Libraries	TheDevLoop.md	The Development Loop	when you're adding, updating functions
+3.3	Libraries	LibraryOrganization.md	Library Organization	which functions go where
+3.4	Libraries	RetireFunctions.md	Wrapup and Retire Functions	Wrap Up Development
+3.5	Libraries	MarkerFiles.md	Marker Files and Backup	Updating  Function Libraries, Database
+4.1	Applications	Backup.md	The Universal Backup	  works on any type, no numeric limits
+4.2	Applications	SimpleVersion.md	A Simple Version Scheme	given a current Backup, declare it a Version
+xx	Applications	FunctionList.md	Using Function Lists	constructing function lists, type of
+4.3	Applications	UnixRelationalDB.md	Unix Relational Data Base	follows the Book of the same name
+4.4	Applications	AlittleMath.md	A Little Math Library	function to wrap a command-line calculator
+4.5	Applications	PunchtheClock.md	Punch the Clock	Timekeeping - Project, Task & Comment
+5.1	Author Tools	UsingMarkdown.md	Using Markdown Editor	settled on Markdown formatting
+5.2	Author Tools	DocumentWriting.md	Document Writing Tools	functions around pandoc
+6.1	Appendix	UnixUtilities.md	Unix Utilities	Command Reference
